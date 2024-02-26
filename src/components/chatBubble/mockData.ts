@@ -24,7 +24,7 @@ export const localMessages: Array<IMessage> = [
       contentType: "TEXT",
       content: "Test message",
     },
-    createdAt: new Date().toISOString(),
+    createdAt: new Date("2024-02-26 00:22").toISOString(),
   },
 
   {
