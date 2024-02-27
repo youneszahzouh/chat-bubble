@@ -6,11 +6,18 @@ export interface IMessage {
     avatarUrl: string;
     isMe: boolean;
   };
-  message: {
-    contentType: TMessageContentType;
-    content: string;
-  };
+  message: ITextMessage | IImageMessage;
   createdAt: string;
+}
+
+export interface ITextMessage {
+  contentType: "TEXT";
+  content: string;
+}
+
+export interface IImageMessage {
+  contentType: "IMAGE";
+  files: string[];
 }
 
 export const localMessages: Array<IMessage> = [
@@ -39,6 +46,58 @@ export const localMessages: Array<IMessage> = [
     },
     createdAt: new Date().toISOString(),
   },
+  {
+    user: {
+      name: "Younes",
+      avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Younes",
+      isMe: true,
+    },
+    message: {
+      contentType: "IMAGE",
+      files: [
+        "https://projects.seattletimes.com/2022/local/photos-of-the-year-2022/assets/POY2022/1POY.webp",
+        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
+        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
+        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
+        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
+      ],
+    },
+    createdAt: new Date().toISOString(),
+  },
+  {
+    user: {
+      name: "Younes",
+      avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Younes",
+      isMe: true,
+    },
+    message: {
+      contentType: "IMAGE",
+      files: [
+        "https://projects.seattletimes.com/2022/local/photos-of-the-year-2022/assets/POY2022/1POY.webp",
+        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
+        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
+        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
+        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
+      ],
+    },
+    createdAt: new Date().toISOString(),
+  },
+  {
+    user: {
+      name: "Younes",
+      avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Younes",
+      isMe: true,
+    },
+    message: {
+      contentType: "IMAGE",
+      files: [
+        "https://projects.seattletimes.com/2022/local/photos-of-the-year-2022/assets/POY2022/1POY.webp",
+      ],
+    },
+    createdAt: new Date().toISOString(),
+  },
+  
+  
 ];
 
 export const defaultMessage: IMessage = {

@@ -1,5 +1,5 @@
 import { cn } from "../../utils/cn";
-import { IMessage } from "./mockData";
+import { IImageMessage, IMessage, ITextMessage } from "./mockData";
 import { Avatar } from "./Avatar";
 import {
   Tooltip,
@@ -17,19 +17,18 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
         data.user.isMe && "flex-row-reverse"
       )}
     >
-      <Avatar url={data?.user?.avatarUrl} />
+      {data.user.isMe ? null : <Avatar url={data?.user?.avatarUrl} />}
 
       <TooltipProvider>
         <Tooltip delayDuration={0}>
           <TooltipTrigger asChild>
-            <p
-              className={cn(
-                "bg-blue-500 px-2 py-1 rounded-xl  text-white",
-                data.user.isMe && "bg-gray-500"
-              )}
-            >
-              {data.message.content}
-            </p>
+            {data.message.contentType === "TEXT" ? (
+              <TextMessageItem data={data.message} isMe={data.user.isMe} />
+            ) : data.message.contentType === "IMAGE" ? (
+              <ImageMessageItem data={data.message} isMe={data.user.isMe} />
+            ) : (
+              "Type is not supported"
+            )}
           </TooltipTrigger>
           <TooltipContent
             side="left"
@@ -43,3 +42,36 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
     </div>
   );
 };
+
+function TextMessageItem(props: { data: ITextMessage; isMe: boolean }) {
+  return (
+    <p
+      className={cn(
+        "bg-blue-500 px-2 py-1 rounded-xl  text-white",
+        props.isMe && "bg-gray-500"
+      )}
+    >
+      {props?.data?.content}
+    </p>
+  );
+}
+
+function ImageMessageItem(props: { data: IImageMessage; isMe: boolean }) {
+  const files = props.data.files;
+  return (
+    <div
+      className={cn(
+        "grid grid-cols-3 gap-1 col-span-full ",
+        files?.length < 3 && `grid-cols-${files?.length}`
+      )}
+    >
+      {files?.map((image) => (
+        <img
+          className="h-20 w-full min-w-28 rounded object-cover"
+          src={image}
+          alt="picture"
+        />
+      ))}
+    </div>
+  );
+}

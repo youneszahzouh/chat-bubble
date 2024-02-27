@@ -1,49 +1,52 @@
-import { KeyboardEvent, RefObject, useCallback, useRef, useState } from "react";
-import { IMessage, defaultMessage } from "./mockData";
-import { cn } from "../../utils/cn";
 import { CloseCircle, GalleryExport, Microphone, Send } from "iconsax-react";
+import { KeyboardEvent, RefObject, useCallback, useRef, useState } from "react";
+import { cn } from "../../utils/cn";
 import { FilePreview } from "./FilePreview";
+import { IImageMessage, ITextMessage } from "./mockData";
 
 export const MessagingInputs = ({
   onSendMessage,
 }: {
-  onSendMessage: (message: IMessage) => void;
+  onSendMessage: (message: ITextMessage | IImageMessage) => void;
 }) => {
-  const [message, setMessage] = useState<IMessage>(defaultMessage);
+  const [textMessage, setTextMessage] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
 
-  const handleSendMessage = useCallback(
-    (message: IMessage) => {
-      onSendMessage(message);
-      setMessage({
-        ...message,
-        message: { ...message.message, content: "" },
+  const handleSendMessage = useCallback(() => {
+    if (textMessage) {
+      onSendMessage({
+        contentType: "TEXT",
+        content: textMessage,
       });
-    },
-    [onSendMessage]
-  );
+    }
+
+    if (files && files.length > 0) {
+      onSendMessage({
+        contentType: "IMAGE",
+        files: files?.map((file) => URL.createObjectURL(file)),
+      });
+    }
+    setTextMessage("");
+  }, [files, onSendMessage, textMessage]);
 
   const onTextAreaKeyUp = useCallback(
     (event: KeyboardEvent<HTMLTextAreaElement>): void => {
       if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
 
-        handleSendMessage(message);
+        handleSendMessage();
       }
     },
-    [handleSendMessage, message]
+    [handleSendMessage]
   );
 
   const onMessageChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setMessage({
-        ...message,
-        message: { ...message.message, content: e.target.value },
-      });
+      setTextMessage(e.target.value);
     },
-    [message]
+    []
   );
 
-  const [files, setFiles] = useState<File[]>([]);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileObj = event.target.files && event.target.files[0];
     if (!fileObj) {
@@ -90,19 +93,21 @@ export const MessagingInputs = ({
           "rounded-xl gap-4 h-auto overflow-auto flex-wrap flex w-full  bg-gray-700 text-white px-3 py-2 shadow-sm "
         )}
       >
-        <div className="flex gap-4 p-4 ">
-          {files?.map((file) => (
-            <div className="rounded relative">
-              <button
-                className="absolute -right-2 -top-2"
-                onClick={() => onRemoveFileLocal(file)}
-              >
-                <CloseCircle variant="Bold" color="#d9e3f0" />
-              </button>
-              <FilePreview file={file} />
-            </div>
-          ))}
-        </div>
+        {files?.length > 0 ? (
+          <div className="flex gap-4 p-4 ">
+            {files?.map((file) => (
+              <div className="rounded relative">
+                <button
+                  className="absolute -right-2 -top-2"
+                  onClick={() => onRemoveFileLocal(file)}
+                >
+                  <CloseCircle variant="Bold" color="#d9e3f0" />
+                </button>
+                <FilePreview file={file} />
+              </div>
+            ))}
+          </div>
+        ) : null}
         <input
           style={{ display: "none" }}
           ref={inputRef}
@@ -116,12 +121,12 @@ export const MessagingInputs = ({
             "resize-none flex-wrap flex w-full  bg-gray-700 text-white px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-none focus-visible:ring-none disabled:cursor-not-allowed disabled:opacity-50"
           )}
           rows={1}
-          value={message.message.content}
+          value={textMessage}
           onChange={onMessageChange}
           onKeyUp={onTextAreaKeyUp}
         />
       </div>
-      <button onClick={() => handleSendMessage(message)}>
+      <button onClick={handleSendMessage}>
         <Send size="32" variant="Bold" color="#ED3C3A" />
       </button>
     </div>

@@ -1,14 +1,25 @@
 import { useCallback, useState } from "react";
 import { MessageItem } from "./MessageItem";
-import { IMessage, localMessages } from "./mockData";
+import { IImageMessage, ITextMessage, localMessages } from "./mockData";
 import { MessagingInputs } from "./MessagingInputs";
 
 const ChatWindow = () => {
   const [messages, setMessages] = useState(localMessages);
 
   const onSendMessage = useCallback(
-    (message: IMessage) => {
-      setMessages([...messages, message]);
+    (message: IImageMessage | ITextMessage) => {
+      setMessages([
+        ...messages,
+        {
+          user: {
+            name: "Zahzouh",
+            avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Zahzouh",
+            isMe: true,
+          },
+          message,
+          createdAt: new Date().toISOString(),
+        },
+      ]);
     },
     [messages]
   );
