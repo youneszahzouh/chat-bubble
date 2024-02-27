@@ -3,7 +3,7 @@ import ChatWindow from "./ChatWindow";
 import { MessagingInputs } from "./MessagingInputs";
 import { IImageMessage, ITextMessage, localMessages } from "./mockData";
 
-const ChatBubble = () => {
+const ChatMessages = () => {
   const [messages, setMessages] = useState(localMessages);
 
   const onSendMessage = useCallback(
@@ -27,8 +27,8 @@ const ChatBubble = () => {
 
   return (
     <>
-      <header className="p-2 h-[60px] flex items-center border-b-gray-200 border-b text-white ">
-        younes
+      <header className="p-2 h-[50px] flex justify-center items-center bg-gray-700  text-white ">
+        Messages
       </header>
       <ChatWindow messages={messages} />
 
@@ -37,4 +37,4 @@ const ChatBubble = () => {
   );
 };
 
-export default ChatBubble;
+export default ChatMessages;
