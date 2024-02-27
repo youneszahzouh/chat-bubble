@@ -7,10 +7,11 @@ const ChatWindow = () => {
   const [messages, setMessages] = useState(localMessages);
 
   const onSendMessage = useCallback(
-    (message: IImageMessage | ITextMessage) => {
+    (messagesToSend: Array<IImageMessage | ITextMessage>) => {
+      messagesToSend;
       setMessages([
         ...messages,
-        {
+        ...messagesToSend.map((message) => ({
           user: {
             name: "Zahzouh",
             avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Zahzouh",
@@ -18,7 +19,7 @@ const ChatWindow = () => {
           },
           message,
           createdAt: new Date().toISOString(),
-        },
+        })),
       ]);
     },
     [messages]
