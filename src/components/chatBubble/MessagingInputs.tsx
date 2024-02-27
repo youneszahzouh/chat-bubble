@@ -29,7 +29,7 @@ export const MessagingInputs = ({
     setTextMessage("");
   }, [files, onSendMessage, textMessage]);
 
-  const onTextAreaKeyUp = useCallback(
+  const onTextAreaKeyDown = useCallback(
     (event: KeyboardEvent<HTMLTextAreaElement>): void => {
       if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
@@ -123,7 +123,7 @@ export const MessagingInputs = ({
           rows={1}
           value={textMessage}
           onChange={onMessageChange}
-          onKeyUp={onTextAreaKeyUp}
+          onKeyDown={onTextAreaKeyDown}
         />
       </div>
       <button onClick={handleSendMessage}>
