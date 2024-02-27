@@ -61,8 +61,8 @@ function ImageMessageItem(props: { data: IImageMessage; isMe: boolean }) {
   return (
     <div
       className={cn(
-        "grid grid-cols-3 gap-1 col-span-full ",
-        files?.length < 3 && `grid-cols-${files?.length}`
+        "grid grid-cols-2 gap-1 col-span-full ",
+        files?.length < 2 && `grid-cols-${files?.length}`
       )}
     >
       {files?.map((image) => (
