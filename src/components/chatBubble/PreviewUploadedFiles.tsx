@@ -8,7 +8,7 @@ export const PreviewUploadedFiles = () => {
   return context && context.files?.length > 0 ? (
     <div className="flex gap-4 p-4 ">
       {context.files?.map((file: File) => (
-        <PreviewUploadedFile file={file} />
+        <PreviewUploadedFile file={file} key={file.lastModified + file.name} />
       ))}
     </div>
   ) : null;

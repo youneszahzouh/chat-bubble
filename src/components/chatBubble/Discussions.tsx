@@ -5,13 +5,18 @@ import { Avatar } from "./Avatar";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { Minus } from "iconsax-react";
 import { ChatBubbleContext } from "./ChatBubble";
+import i18n from "../../locales/i18n";
+import { useTranslation } from "react-i18next";
 
 const ChatDiscussions = () => {
   const context = useContext(ChatBubbleContext);
+
+  const { t } = useTranslation();
+
   return (
     <>
       <header className="p-2 h-[50px] flex justify-between items-center bg-gray-700  text-white ">
-        <span className="text-center flex-1">Messages</span>
+        <span className="text-center flex-1">{t("conversations")}</span>
         <PopoverClose asChild>
           <button>
             <Minus size="24" color="#FFF" />
@@ -41,7 +46,8 @@ const ChatDiscussions = () => {
                 </p>
                 <span>
                   {getRelativeTime(
-                    new Date(discussion.latestMessage.createdAt)
+                    new Date(discussion.latestMessage.createdAt),
+                    i18n.language
                   )}
                 </span>
               </div>

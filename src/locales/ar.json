@@ -3,5 +3,8 @@
   "english": "إنجليزي",
   "french": "فرنسي",
   "spanish": "الأسبانية",
-  "an-empty-page-to-make-use-of-a-chatbubble-component": "صفحة فارغة للاستفادة من مكون ChatBubble"
+  "an-empty-page-to-make-use-of-a-chatbubble-component": "صفحة فارغة للاستفادة من مكون ChatBubble",
+  "type-is-not-supported": "النوع غير مدعوم",
+  "conversations": "المحادثات",
+  "preview-image": "صورة المعاينة"
 }

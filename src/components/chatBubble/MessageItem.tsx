@@ -8,15 +8,25 @@ import {
   TooltipTrigger,
 } from "../toolTip/ToolTip";
 import { getRelativeTime } from "../../utils/getRelativeTime";
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { ChatBubbleContext } from "./ChatBubble";
+import i18n from "../../locales/i18n";
+import { useTranslation } from "react-i18next";
 
 export const MessageItem = ({ data }: { data: IMessage }) => {
+  const { t } = useTranslation();
+
   const context = useContext(ChatBubbleContext);
 
   const CustomMessageComponent = context?.messageTypes?.find(
     (item) => item.type === data.message.contentType
   )?.component;
+
+  const lastItemRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (lastItemRef.current) lastItemRef.current.scrollIntoView();
+  }, []);
 
   return (
     <div
@@ -24,6 +34,7 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
         "flex items-start gap-1",
         data.user.isMe && "flex-row-reverse"
       )}
+      ref={lastItemRef}
     >
       {data.user.isMe ? null : <Avatar url={data?.user?.avatarUrl} />}
 
@@ -50,7 +61,7 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
                   <ImageMessageItem data={data.message} isMe={data.user.isMe} />
                 )
               ) : (
-                "Type is not supported"
+                t("type-is-not-supported")
               )}
             </div>
           </TooltipTrigger>
@@ -59,7 +70,7 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
             sideOffset={0}
             className="bg-gray-100/80 rounded p-1 m-1 capitalize"
           >
-            {getRelativeTime(new Date(data.createdAt))}
+            {getRelativeTime(new Date(data.createdAt), i18n.language)}
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

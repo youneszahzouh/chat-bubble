@@ -37,6 +37,7 @@ export const MessagingInputs = ({
 
   const handleSendMessage = useCallback(() => {
     const messagesToSend: Array<ITextMessage | IImageMessage> = [];
+
     if (textMessage) {
       messagesToSend.push({
         contentType: "TEXT",
@@ -49,9 +50,8 @@ export const MessagingInputs = ({
         contentType: "IMAGE",
         files: files?.map((file) => URL.createObjectURL(file)),
       });
-
-      onSendMessage(messagesToSend);
     }
+    onSendMessage(messagesToSend);
     setTextMessage("");
     resetFiles();
   }, [files, onSendMessage, textMessage]);

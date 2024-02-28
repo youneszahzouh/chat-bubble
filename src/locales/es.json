@@ -3,5 +3,8 @@
   "english": "Inglés",
   "arabic": "Arábica",
   "spanish": "Español",
-  "an-empty-page-to-make-use-of-a-chatbubble-component": "Una página vacía para utilizar un componente ChatBubble"
+  "an-empty-page-to-make-use-of-a-chatbubble-component": "Una página vacía para utilizar un componente ChatBubble",
+  "type-is-not-supported": "El tipo no es compatible",
+  "conversations": "Conversaciones",
+  "preview-image": "imagen de vista previa"
 }
