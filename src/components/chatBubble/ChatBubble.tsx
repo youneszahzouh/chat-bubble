@@ -20,6 +20,7 @@ export interface IChatBubbleContext {
   >;
 
   messageTypes?: ITypeOfMessage[];
+  popoverOpen: boolean;
 }
 
 type IDataMessage =
@@ -48,8 +49,10 @@ function ChatBubble({
 
   const [selectedDiscussion, setSelectedDiscussion] =
     useState<IDiscussion | null>(null);
+
+  const [popoverOpen, setPopoverOpen] = useState(false);
   return (
-    <Popover modal>
+    <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
       <ChatBubbleContext.Provider
         value={{
           selectedDiscussion,
@@ -57,6 +60,7 @@ function ChatBubble({
           discussions,
           setDiscussions,
           messageTypes,
+          popoverOpen,
         }}
       >
         {children ? (
@@ -64,6 +68,7 @@ function ChatBubble({
         ) : (
           <>
             <ChatBubbleTrigger />
+
             <ChatBubbleContent />
           </>
         )}
@@ -81,10 +86,13 @@ export function ChatBubbleTrigger({
   className?: string;
   children?: ReactNode;
 }) {
+  const context = useContext(ChatBubbleContext);
+
   return (
     <PopoverTrigger
       className={cn(
-        "absolute flex  bg-gray-600 transition  rounded-full items-center justify-center p-2 bottom-10 end-10 h-10 w-10",
+        "absolute hidden sm:block  bg-gray-600 transition  rounded-full items-center justify-center p-2 bottom-10 end-10 h-10 w-10",
+        !context?.popoverOpen && "block",
         className
       )}
     >
@@ -106,8 +114,11 @@ export function ChatBubbleContent({
     <PopoverContent
       align="end"
       side="top"
+      // alignOffset={0}
+      sideOffset={0}
       className={cn(
-        "w-[400px] flex flex-col h-[calc(100vh-100px)] p-0 bg-gray-800 rounded-lg border-gray-200",
+        "sm:w-[400px] flex flex-col sm:h-[calc(100vh-100px)] p-0 bg-gray-800 rounded-lg border-gray-200",
+        "h-screen w-screen ",
         className
       )}
     >
