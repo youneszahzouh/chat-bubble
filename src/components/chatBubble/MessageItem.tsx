@@ -8,8 +8,16 @@ import {
   TooltipTrigger,
 } from "../toolTip/ToolTip";
 import { getRelativeTime } from "../../utils/getRelativeTime";
+import { useContext } from "react";
+import { ChatBubbleContext } from "./ChatBubble";
 
 export const MessageItem = ({ data }: { data: IMessage }) => {
+  const context = useContext(ChatBubbleContext);
+
+  const CustomMessageComponent = context?.messageTypes?.find(
+    (item) => item.type === data.message.contentType
+  )?.component;
+
   return (
     <div
       className={cn(
@@ -24,9 +32,23 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
           <TooltipTrigger asChild>
             <div>
               {data.message.contentType === "TEXT" ? (
-                <TextMessageItem data={data.message} isMe={data.user.isMe} />
+                CustomMessageComponent ? (
+                  <CustomMessageComponent
+                    data={data.message}
+                    isMe={data.user.isMe}
+                  />
+                ) : (
+                  <TextMessageItem data={data.message} isMe={data.user.isMe} />
+                )
               ) : data.message.contentType === "IMAGE" ? (
-                <ImageMessageItem data={data.message} isMe={data.user.isMe} />
+                CustomMessageComponent ? (
+                  <CustomMessageComponent
+                    data={data.message}
+                    isMe={data.user.isMe}
+                  />
+                ) : (
+                  <ImageMessageItem data={data.message} isMe={data.user.isMe} />
+                )
               ) : (
                 "Type is not supported"
               )}

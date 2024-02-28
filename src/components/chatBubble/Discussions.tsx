@@ -2,14 +2,21 @@ import { useContext } from "react";
 import { cn } from "../../utils/cn";
 import { getRelativeTime } from "../../utils/getRelativeTime";
 import { Avatar } from "./Avatar";
-import { ChatBubbleContext } from "../../App";
+import { PopoverClose } from "@radix-ui/react-popover";
+import { Minus } from "iconsax-react";
+import { ChatBubbleContext } from "./ChatBubble";
 
 const ChatDiscussions = () => {
   const context = useContext(ChatBubbleContext);
   return (
     <>
-      <header className="p-2 h-[50px] flex justify-center items-center bg-gray-700  text-white ">
-        Messages
+      <header className="p-2 h-[50px] flex justify-between items-center bg-gray-700  text-white ">
+        <span className="text-center flex-1">Messages</span>
+        <PopoverClose asChild>
+          <button>
+            <Minus size="24" color="#FFF" />
+          </button>
+        </PopoverClose>
       </header>
 
       <div className="flex flex-col overflow-auto flex-1">
