@@ -124,7 +124,7 @@ export const MessagingInputs = ({
         handleSendMessage,
       }}
     >
-      <div className="flex gap-1 items-end p-2 overflow-auto h-[70px] ">
+      <div className="flex gap-1 items-end p-2 ">
         <div className="flex gap-2">
           <Microphone size="24" variant="Bold" color="#ED3C3A" />
 

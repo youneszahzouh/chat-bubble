@@ -1,14 +1,16 @@
+import { ArrowLeft } from "iconsax-react";
 import { useCallback, useContext, useState } from "react";
+import { ChatBubbleContext } from "../../App";
 import ChatWindow from "./ChatWindow";
 import { MessagingInputs } from "./MessagingInputs";
-import { IImageMessage, ITextMessage, localMessages } from "./mockData";
-import { ArrowLeft } from "iconsax-react";
-import { ChatBubbleContext } from "../../App";
+import { IImageMessage, ITextMessage, getOneDiscussion } from "./mockData";
 
 const ChatMessages = () => {
   const context = useContext(ChatBubbleContext);
 
-  const [messages, setMessages] = useState(localMessages);
+  const [messages, setMessages] = useState(
+    getOneDiscussion(context?.selectedDiscussion?.user)
+  );
 
   const onSendMessage = useCallback(
     (messagesToSend: Array<IImageMessage | ITextMessage>) => {
@@ -17,7 +19,7 @@ const ChatMessages = () => {
         ...messages,
         ...messagesToSend.map((message) => ({
           user: {
-            name: "Zahzouh",
+            name: "ME",
             avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Zahzouh",
             isMe: true,
           },
@@ -41,7 +43,7 @@ const ChatMessages = () => {
         >
           <ArrowLeft color="white" />
         </button>
-        Messages
+        {context?.selectedDiscussion?.user.name}
       </header>
       <ChatWindow messages={messages} />
 

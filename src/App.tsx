@@ -7,18 +7,28 @@ import {
 import ChatMessages from "./components/chatBubble/ChatMessages";
 import ChatDiscussions from "./components/chatBubble/Discussions";
 import { createContext, useState } from "react";
+import {
+  IDiscussion,
+  getAllDiscussions,
+} from "./components/chatBubble/mockData";
 
 export interface IChatBubbleContext {
-  selectedDiscussion: number | null;
-  setSelectedDiscussion: React.Dispatch<React.SetStateAction<number | null>>;
+  discussions: IDiscussion[];
+  setDiscussions: React.Dispatch<React.SetStateAction<IDiscussion[]>>;
+  selectedDiscussion: IDiscussion | null;
+  setSelectedDiscussion: React.Dispatch<
+    React.SetStateAction<IDiscussion | null>
+  >;
 }
 
 export const ChatBubbleContext = createContext<IChatBubbleContext | null>(null);
 
 function App() {
-  const [selectedDiscussion, setSelectedDiscussion] = useState<number | null>(
-    null
+  const [discussions, setDiscussions] = useState<IDiscussion[]>(
+    getAllDiscussions()
   );
+  const [selectedDiscussion, setSelectedDiscussion] =
+    useState<IDiscussion | null>(null);
   return (
     <>
       <div className="flex h-screen items-center justify-center">
@@ -29,12 +39,14 @@ function App() {
           <PopoverContent
             align="end"
             side="top"
-            className="w-[400px] overflow-hidden max-h-[min(80vh,800px)] p-0 bg-gray-800 rounded-lg border-gray-200"
+            className="w-[400px] flex flex-col h-[calc(100vh-100px)] p-0 bg-gray-800 rounded-lg border-gray-200"
           >
             <ChatBubbleContext.Provider
               value={{
                 selectedDiscussion,
                 setSelectedDiscussion,
+                discussions,
+                setDiscussions,
               }}
             >
               {selectedDiscussion ? <ChatMessages /> : <ChatDiscussions />}

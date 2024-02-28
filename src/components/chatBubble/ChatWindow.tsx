@@ -3,7 +3,7 @@ import { IMessage } from "./mockData";
 
 const ChatWindow = ({ messages }: { messages: IMessage[] }) => {
   return (
-    <div className="flex flex-col gap-2 overflow-auto max-h-[60vh] p-4">
+    <div className="flex flex-col gap-2 overflow-auto flex-1 p-4">
       {messages?.map((message, index) => (
         <MessageItem key={index} data={message} />
       ))}

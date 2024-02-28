@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { cn } from "../../utils/cn";
 import { getRelativeTime } from "../../utils/getRelativeTime";
 import { Avatar } from "./Avatar";
-import { localDiscussions } from "./mockData";
 import { ChatBubbleContext } from "../../App";
 
 const ChatDiscussions = () => {
@@ -13,8 +12,8 @@ const ChatDiscussions = () => {
         Messages
       </header>
 
-      <div className="flex flex-col overflow-auto max-h-[60vh]">
-        {localDiscussions?.map((discussion, index) => (
+      <div className="flex flex-col overflow-auto flex-1">
+        {context?.discussions?.map((discussion, index) => (
           <button
             key={index}
             className={cn(
@@ -22,7 +21,7 @@ const ChatDiscussions = () => {
             )}
             onClick={() => {
               if (context) {
-                context.setSelectedDiscussion(1);
+                context.setSelectedDiscussion(discussion);
               }
             }}
           >
