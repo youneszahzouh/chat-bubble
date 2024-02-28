@@ -7,13 +7,14 @@ import ChatWindow from "./ChatWindow";
 import { MessagingInputs } from "./MessagingInputs";
 import { IImageMessage, ITextMessage, getOneDiscussion } from "./mockData";
 import { ChatBubbleContext } from "./ChatBubble";
+import { cn } from "../../utils/cn";
+import { Avatar } from "./Avatar";
 
 const ChatMessages = () => {
   const context = useContext(ChatBubbleContext);
 
-  const [messages, setMessages] = useState(
-    getOneDiscussion(context?.selectedDiscussion?.user)
-  );
+  const discussion = getOneDiscussion(context?.selectedDiscussion?.user);
+  const [messages, setMessages] = useState(discussion.messages);
 
   const onSendMessage = useCallback(
     (messagesToSend: Array<IImageMessage | ITextMessage>) => {
@@ -37,21 +38,32 @@ const ChatMessages = () => {
 
   return (
     <>
-      <ChatMessagesHeader />
+      <ChatMessagesHeader accentColor={discussion.meta.accentColor} />
       <ChatWindow messages={messages} />
 
-      <MessagingInputs onSendMessage={onSendMessage} />
+      <MessagingInputs
+        onSendMessage={onSendMessage}
+        accentColor={discussion.meta.accentColor}
+      />
     </>
   );
 };
 
 export default ChatMessages;
 
-function ChatMessagesHeader() {
+function ChatMessagesHeader({ accentColor }: { accentColor: string }) {
   const context = useContext(ChatBubbleContext);
 
   return (
-    <header className="p-2 h-[50px] flex gap-2 items-center justify-between bg-gray-700  text-white ">
+    <header
+      className={cn(
+        "p-2 h-[50px] flex gap-2 items-center justify-between bg-gray-700 text-white  backdrop-invert",
+        "drop-shadow-[black]"
+      )}
+      style={{
+        backgroundColor: accentColor,
+      }}
+    >
       <button
         onClick={() => {
           if (context) {
@@ -62,7 +74,12 @@ function ChatMessagesHeader() {
         <ArrowLeft color="white" />
       </button>
 
-      {context?.selectedDiscussion?.user.name}
+      <div className="flex gap-1 justify-start flex-1 items-center">
+        {context?.selectedDiscussion?.user.avatarUrl && (
+          <Avatar url={context.selectedDiscussion.user.avatarUrl} />
+        )}
+        {context?.selectedDiscussion?.user.name}
+      </div>
 
       <PopoverClose asChild>
         <button>

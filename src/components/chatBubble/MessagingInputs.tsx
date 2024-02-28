@@ -26,8 +26,10 @@ export const MessagingInputsContext = createContext<{
 
 export const MessagingInputs = ({
   onSendMessage,
+  accentColor,
 }: {
   onSendMessage: (messagesToSend: Array<ITextMessage | IImageMessage>) => void;
+  accentColor: string;
 }) => {
   const [textMessage, setTextMessage] = useState<string>("");
   const [files, setFiles] = useState<File[]>([]);
@@ -126,10 +128,10 @@ export const MessagingInputs = ({
     >
       <div className="flex gap-1 items-end p-2 ">
         <div className="flex gap-2">
-          <Microphone size="24" variant="Bold" color="#ED3C3A" />
+          <Microphone size="24" variant="Bold" color={accentColor} />
 
           <button onClick={handleClick}>
-            <GalleryExport size="24" variant="Bold" color="#ED3C3A" />
+            <GalleryExport size="24" variant="Bold" color={accentColor} />
           </button>
         </div>
 
@@ -158,7 +160,7 @@ export const MessagingInputs = ({
           />
         </div>
         <button onClick={handleSendMessage}>
-          <Send size="24" variant="Bold" color="#ED3C3A" />
+          <Send size="24" variant="Bold" color={accentColor} />
         </button>
       </div>
     </MessagingInputsContext.Provider>

@@ -8,6 +8,7 @@ const MessageContentType = {
   // VOICE = "VOICE",
 } as const;
 
+const ACCENT_COLORS = ["#F4538A", "#D04848 ", "#59D5E0", "#FAA300", "#525CEB"];
 export interface IUser {
   name: string;
   avatarUrl: string;
@@ -102,7 +103,7 @@ export const getAllDiscussions = () => {
     });
 };
 
-export const getOneDiscussion = (user?: IUser): Array<IMessage> => {
+export const getOneDiscussion = (user?: IUser): IOneDiscussion => {
   const dataLength = 20;
 
   const uniqueIntegers = generateUniqueIntegers(1, dataLength, dataLength);
@@ -142,8 +143,24 @@ export const getOneDiscussion = (user?: IUser): Array<IMessage> => {
       };
     });
 
-  return data;
+  return {
+    meta: {
+      accentColor: faker.helpers?.arrayElement(ACCENT_COLORS),
+      title: name,
+      avatarUrl: avatar,
+    },
+    messages: data,
+  };
 };
+
+export interface IOneDiscussion {
+  meta: {
+    accentColor: string;
+    title: string;
+    avatarUrl: string;
+  };
+  messages: Array<IMessage>;
+}
 
 export interface IDiscussion {
   id: number;
