@@ -114,7 +114,6 @@ export function ChatBubbleContent({
     <PopoverContent
       align="end"
       side="top"
-      // alignOffset={0}
       sideOffset={0}
       className={cn(
         "sm:w-[400px] flex flex-col sm:h-[calc(100vh-100px)] p-0 bg-gray-800 rounded-lg border-gray-200",
