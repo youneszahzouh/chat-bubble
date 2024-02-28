@@ -14,6 +14,8 @@ export interface IUser {
   isMe: boolean;
 }
 export interface IMessage {
+  id: number;
+
   user: IUser;
   message: ITextMessage | IImageMessage;
   createdAt: string;
@@ -29,85 +31,8 @@ export interface IImageMessage {
   files: string[];
 }
 
-export const localMessages: Array<IMessage> = [
-  {
-    user: {
-      name: "Younes",
-      avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Younes",
-      isMe: false,
-    },
-    message: {
-      contentType: "TEXT",
-      content: "Test message",
-    },
-    createdAt: new Date("2024-02-26 00:22").toISOString(),
-  },
-
-  {
-    user: {
-      name: "Younes",
-      avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Younes",
-      isMe: false,
-    },
-    message: {
-      contentType: "TEXT",
-      content: "can we have a meet ?",
-    },
-    createdAt: new Date().toISOString(),
-  },
-  {
-    user: {
-      name: "Younes",
-      avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Younes",
-      isMe: true,
-    },
-    message: {
-      contentType: "IMAGE",
-      files: [
-        "https://projects.seattletimes.com/2022/local/photos-of-the-year-2022/assets/POY2022/1POY.webp",
-        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
-        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
-        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
-        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
-      ],
-    },
-    createdAt: new Date().toISOString(),
-  },
-  {
-    user: {
-      name: "Younes",
-      avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Younes",
-      isMe: true,
-    },
-    message: {
-      contentType: "IMAGE",
-      files: [
-        "https://projects.seattletimes.com/2022/local/photos-of-the-year-2022/assets/POY2022/1POY.webp",
-        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
-        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
-        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
-        "https://www.planetware.com/wpimages/2019/11/canada-in-pictures-beautiful-places-to-photograph-morraine-lake.jpg",
-      ],
-    },
-    createdAt: new Date().toISOString(),
-  },
-  {
-    user: {
-      name: "Younes",
-      avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Younes",
-      isMe: true,
-    },
-    message: {
-      contentType: "IMAGE",
-      files: [
-        "https://projects.seattletimes.com/2022/local/photos-of-the-year-2022/assets/POY2022/1POY.webp",
-      ],
-    },
-    createdAt: new Date().toISOString(),
-  },
-];
-
 export const defaultMessage: IMessage = {
+  id: faker.number.int({ max: 10000 }),
   user: {
     name: "Zahzouh",
     avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Zahzouh",
@@ -201,6 +126,7 @@ export const getOneDiscussion = (user?: IUser): Array<IMessage> => {
         message:
           contentType === "TEXT"
             ? ({
+                id: uniqueIntegers[index],
                 contentType,
                 content: faker.lorem.sentence(),
               } as ITextMessage)

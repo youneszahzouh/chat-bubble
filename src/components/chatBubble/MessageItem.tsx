@@ -22,13 +22,15 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
       <TooltipProvider>
         <Tooltip delayDuration={0}>
           <TooltipTrigger asChild>
-            {data.message.contentType === "TEXT" ? (
-              <TextMessageItem data={data.message} isMe={data.user.isMe} />
-            ) : data.message.contentType === "IMAGE" ? (
-              <ImageMessageItem data={data.message} isMe={data.user.isMe} />
-            ) : (
-              "Type is not supported"
-            )}
+            <div>
+              {data.message.contentType === "TEXT" ? (
+                <TextMessageItem data={data.message} isMe={data.user.isMe} />
+              ) : data.message.contentType === "IMAGE" ? (
+                <ImageMessageItem data={data.message} isMe={data.user.isMe} />
+              ) : (
+                "Type is not supported"
+              )}
+            </div>
           </TooltipTrigger>
           <TooltipContent
             side="left"
@@ -65,11 +67,12 @@ function ImageMessageItem(props: { data: IImageMessage; isMe: boolean }) {
         files?.length < 2 && `grid-cols-${files?.length}`
       )}
     >
-      {files?.map((image) => (
+      {files?.map((image, index) => (
         <img
           className="h-20 w-full min-w-28 rounded object-cover"
           src={image}
           alt="picture"
+          key={index}
         />
       ))}
     </div>

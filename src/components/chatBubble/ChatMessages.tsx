@@ -4,6 +4,7 @@ import { ChatBubbleContext } from "../../App";
 import ChatWindow from "./ChatWindow";
 import { MessagingInputs } from "./MessagingInputs";
 import { IImageMessage, ITextMessage, getOneDiscussion } from "./mockData";
+import { faker } from "@faker-js/faker";
 
 const ChatMessages = () => {
   const context = useContext(ChatBubbleContext);
@@ -18,6 +19,7 @@ const ChatMessages = () => {
       setMessages([
         ...messages,
         ...messagesToSend.map((message) => ({
+          id: faker.number.int({ max: 10000 }),
           user: {
             name: "ME",
             avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Zahzouh",
