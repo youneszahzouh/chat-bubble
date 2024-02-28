@@ -1,5 +1,5 @@
 import { MessageText1 } from "iconsax-react";
-import { ReactNode, createContext, useContext, useMemo, useState } from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 import { cn } from "../../utils/cn";
 import { Popover, PopoverContent, PopoverTrigger } from "../Popover/Popover";
 import ChatMessages from "./ChatMessages";
@@ -10,7 +10,6 @@ import {
   ITextMessage,
   getAllDiscussions,
 } from "./mockData";
-import { getLayoutDirection } from "../../utils/getLayoutDirection";
 
 export interface IChatBubbleContext {
   discussions: IDiscussion[];
@@ -22,7 +21,6 @@ export interface IChatBubbleContext {
 
   messageTypes?: ITypeOfMessage[];
   popoverOpen: boolean;
-  layoutDirection: "rtl" | "ltr";
 }
 
 type IDataMessage =
@@ -54,8 +52,6 @@ function ChatBubble({
 
   const [popoverOpen, setPopoverOpen] = useState(false);
 
-  const layoutDirection = useMemo(() => getLayoutDirection(), []);
-
   return (
     <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
       <ChatBubbleContext.Provider
@@ -66,7 +62,6 @@ function ChatBubble({
           setDiscussions,
           messageTypes,
           popoverOpen,
-          layoutDirection,
         }}
       >
         {children ? (
