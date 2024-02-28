@@ -1,9 +1,13 @@
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import ChatWindow from "./ChatWindow";
 import { MessagingInputs } from "./MessagingInputs";
 import { IImageMessage, ITextMessage, localMessages } from "./mockData";
+import { ArrowLeft } from "iconsax-react";
+import { ChatBubbleContext } from "../../App";
 
 const ChatMessages = () => {
+  const context = useContext(ChatBubbleContext);
+
   const [messages, setMessages] = useState(localMessages);
 
   const onSendMessage = useCallback(
@@ -27,7 +31,16 @@ const ChatMessages = () => {
 
   return (
     <>
-      <header className="p-2 h-[50px] flex justify-center items-center bg-gray-700  text-white ">
+      <header className="p-2 h-[50px] flex gap-2 items-center bg-gray-700  text-white ">
+        <button
+          onClick={() => {
+            if (context) {
+              context.setSelectedDiscussion(null);
+            }
+          }}
+        >
+          <ArrowLeft color="white" />
+        </button>
         Messages
       </header>
       <ChatWindow messages={messages} />

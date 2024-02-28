@@ -1,11 +1,12 @@
 export type TMessageContentType = "TEXT" | "IMAGE" | "VOICE";
 
+export interface IUser {
+  name: string;
+  avatarUrl: string;
+  isMe: boolean;
+}
 export interface IMessage {
-  user: {
-    name: string;
-    avatarUrl: string;
-    isMe: boolean;
-  };
+  user: IUser;
   message: ITextMessage | IImageMessage;
   createdAt: string;
 }
@@ -96,8 +97,6 @@ export const localMessages: Array<IMessage> = [
     },
     createdAt: new Date().toISOString(),
   },
-  
-  
 ];
 
 export const defaultMessage: IMessage = {
@@ -112,3 +111,64 @@ export const defaultMessage: IMessage = {
   },
   createdAt: new Date().toISOString(),
 };
+
+export const localDiscussions = [
+  {
+    id: 1,
+    user: {
+      name: "Younes",
+      avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Younes",
+    },
+    latestMessage: {
+      message: {
+        contentType: "TEXT",
+        content: "Hey Younes",
+      },
+      createdAt: new Date().toISOString(),
+    },
+  },
+
+  {
+    id: 2,
+    user: {
+      name: "Zahzouh",
+      avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Younes",
+    },
+    latestMessage: {
+      message: {
+        contentType: "TEXT",
+        content: "Hey Younes",
+      },
+      createdAt: new Date().toISOString(),
+    },
+  },
+  {
+    id: 3,
+    user: {
+      name: "Zakaria",
+      avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Younes",
+    },
+    latestMessage: {
+      message: {
+        contentType: "TEXT",
+        content: "Hey Younes",
+      },
+      createdAt: new Date().toISOString(),
+    },
+  },
+
+  {
+    id: 4,
+    user: {
+      name: "Yehya",
+      avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Younes",
+    },
+    latestMessage: {
+      message: {
+        contentType: "TEXT",
+        content: "Hey Younes",
+      },
+      createdAt: new Date().toISOString(),
+    },
+  },
+];

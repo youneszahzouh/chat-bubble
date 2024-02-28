@@ -5,8 +5,20 @@ import {
   PopoverTrigger,
 } from "./components/Popover/Popover";
 import ChatMessages from "./components/chatBubble/ChatMessages";
+import ChatDiscussions from "./components/chatBubble/Discussions";
+import { createContext, useState } from "react";
+
+export interface IChatBubbleContext {
+  selectedDiscussion: number | null;
+  setSelectedDiscussion: React.Dispatch<React.SetStateAction<number | null>>;
+}
+
+export const ChatBubbleContext = createContext<IChatBubbleContext | null>(null);
 
 function App() {
+  const [selectedDiscussion, setSelectedDiscussion] = useState<number | null>(
+    null
+  );
   return (
     <>
       <div className="flex h-screen items-center justify-center">
@@ -19,7 +31,14 @@ function App() {
             side="top"
             className="w-[400px] overflow-hidden max-h-[min(80vh,800px)] p-0 bg-gray-800 rounded-lg border-gray-200"
           >
-            <ChatMessages />
+            <ChatBubbleContext.Provider
+              value={{
+                selectedDiscussion,
+                setSelectedDiscussion,
+              }}
+            >
+              {selectedDiscussion ? <ChatMessages /> : <ChatDiscussions />}
+            </ChatBubbleContext.Provider>
           </PopoverContent>
         </Popover>
       </div>
