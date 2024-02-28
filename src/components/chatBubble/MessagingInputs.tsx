@@ -10,6 +10,7 @@ import {
 import { cn } from "../../utils/cn";
 import { PreviewUploadedFiles } from "./PreviewUploadedFiles";
 import { IImageMessage, ITextMessage } from "./mockData";
+import { getLayoutDirection } from "../../utils/getLayoutDirection";
 
 export const MessagingInputsContext = createContext<{
   onRemoveFileLocal: (file: File) => void;
@@ -112,6 +113,7 @@ export const MessagingInputs = ({
     [files]
   );
 
+  const layoutDirection = getLayoutDirection();
   return (
     <MessagingInputsContext.Provider
       value={{
@@ -159,7 +161,10 @@ export const MessagingInputs = ({
             onKeyDown={onTextAreaKeyDown}
           />
         </div>
-        <button onClick={handleSendMessage}>
+        <button
+          onClick={handleSendMessage}
+          className={cn(layoutDirection === "rtl" && "-scale-x-100")}
+        >
           <Send size="24" variant="Bold" color={accentColor} />
         </button>
       </div>

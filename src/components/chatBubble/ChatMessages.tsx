@@ -9,6 +9,7 @@ import { IImageMessage, ITextMessage, getOneDiscussion } from "./mockData";
 import { ChatBubbleContext } from "./ChatBubble";
 import { cn } from "../../utils/cn";
 import { Avatar } from "./Avatar";
+import i18n from "../../locales/i18n";
 
 const ChatMessages = () => {
   const context = useContext(ChatBubbleContext);
@@ -54,6 +55,7 @@ export default ChatMessages;
 function ChatMessagesHeader({ accentColor }: { accentColor: string }) {
   const context = useContext(ChatBubbleContext);
 
+  const layoutDirection = i18n.dir();
   return (
     <header
       className={cn(
@@ -70,6 +72,7 @@ function ChatMessagesHeader({ accentColor }: { accentColor: string }) {
             context.setSelectedDiscussion(null);
           }
         }}
+        className={cn(layoutDirection === "rtl" && "-scale-x-100")}
       >
         <ArrowLeft color="white" />
       </button>
