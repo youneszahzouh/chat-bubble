@@ -1,4 +1,10 @@
-import { GalleryExport, Microphone, Send } from "iconsax-react";
+import {
+  CloseCircle,
+  GalleryExport,
+  Microphone,
+  Send,
+  StopCircle,
+} from "iconsax-react";
 import {
   KeyboardEvent,
   RefObject,
@@ -8,9 +14,10 @@ import {
   useState,
 } from "react";
 import { cn } from "../../utils/cn";
+import { getLayoutDirection } from "../../utils/getLayoutDirection";
+import { useAudioRecorder } from "../AudioRecorder/AudioRecorder";
 import { PreviewUploadedFiles } from "./PreviewUploadedFiles";
 import { IImageMessage, ITextMessage } from "./mockData";
-import { getLayoutDirection } from "../../utils/getLayoutDirection";
 
 export const MessagingInputsContext = createContext<{
   onRemoveFileLocal: (file: File) => void;
@@ -72,14 +79,14 @@ export const MessagingInputs = ({
         handleSendMessage();
       }
     },
-    [handleSendMessage]
+    [handleSendMessage],
   );
 
   const onMessageChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setTextMessage(e.target.value);
     },
-    []
+    [],
   );
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,10 +117,14 @@ export const MessagingInputs = ({
       if (inputRef && inputRef.current)
         inputRef.current.files = dataTransfer.files;
     },
-    [files]
+    [files],
   );
 
   const layoutDirection = getLayoutDirection();
+
+  const { audio, resetAudio, startRecording, recordingStatus, stopRecording } =
+    useAudioRecorder();
+
   return (
     <MessagingInputsContext.Provider
       value={{
@@ -128,39 +139,60 @@ export const MessagingInputs = ({
         handleSendMessage,
       }}
     >
-      <div className="flex gap-1 items-end p-2 ">
+      <div className="flex items-end gap-1 p-2 ">
         <div className="flex gap-2">
-          <Microphone size="24" variant="Bold" color={accentColor} />
+          {recordingStatus === "inactive" ? (
+            audio ? (
+              <button onClick={resetAudio}>
+                <CloseCircle size="24" variant="Bold" color={accentColor} />
+              </button>
+            ) : (
+              <>
+                <button onClick={startRecording}>
+                  <Microphone size="24" variant="Bold" color={accentColor} />
+                </button>
 
-          <button onClick={handleClick}>
-            <GalleryExport size="24" variant="Bold" color={accentColor} />
-          </button>
-        </div>
-
-        <div
-          className={cn(
-            "rounded-xl gap-4 h-auto overflow-auto flex-wrap flex w-full  bg-gray-700 text-white px-3 py-2 shadow-sm "
+                <button onClick={handleClick}>
+                  <GalleryExport size="24" variant="Bold" color={accentColor} />
+                </button>
+              </>
+            )
+          ) : (
+            <button onClick={stopRecording}>
+              <StopCircle size="24" variant="Bold" color={accentColor} />
+            </button>
           )}
-        >
-          <PreviewUploadedFiles />
-          <input
-            style={{ display: "none" }}
-            ref={inputRef}
-            type="file"
-            onChange={handleFileChange}
-            multiple
-          />
-
-          <textarea
-            className={cn(
-              "resize-none flex-wrap flex w-full  bg-gray-700 text-white px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-none focus-visible:ring-none disabled:cursor-not-allowed disabled:opacity-50"
-            )}
-            rows={1}
-            value={textMessage}
-            onChange={onMessageChange}
-            onKeyDown={onTextAreaKeyDown}
-          />
         </div>
+
+        {audio ? (
+          <audio className="flex flex-1 w-full" controls controlsList="nodownload" src={audio} />
+        ) : (
+          <div
+            className={cn(
+              "flex h-auto w-full flex-wrap gap-4 overflow-auto rounded-xl  bg-gray-700 px-3 py-2 text-white shadow-sm ",
+            )}
+          >
+            <PreviewUploadedFiles />
+            <input
+              style={{ display: "none" }}
+              ref={inputRef}
+              type="file"
+              onChange={handleFileChange}
+              multiple
+            />
+
+            <textarea
+              className={cn(
+                "placeholder:text-muted-foreground focus-visible:ring-none focus-visible:ring-none flex  w-full resize-none flex-wrap bg-gray-700 px-3 py-2 text-sm text-white shadow-sm focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+              )}
+              rows={1}
+              value={textMessage}
+              onChange={onMessageChange}
+              onKeyDown={onTextAreaKeyDown}
+            />
+          </div>
+        )}
+
         <button
           onClick={handleSendMessage}
           className={cn(layoutDirection === "rtl" && "-scale-x-100")}
