@@ -52,7 +52,6 @@ function ChatBubble({
   const [selectedDiscussion, setSelectedDiscussion] =
     useState<IDiscussion | null>(null);
 
-
   const [popoverOpen, setPopoverOpen] = useState(false);
 
   return (

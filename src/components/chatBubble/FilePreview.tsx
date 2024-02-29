@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 export const FilePreview = ({ file }: { file: File }) => {
   const { t } = useTranslation();
   return isImage(file) ? (
-    <div className="w-10 h-10 overflow-hidden rounded">
+    <div className="h-10 w-10 overflow-hidden rounded">
       <img
         className="h-full w-full object-cover"
         alt={t("preview-image")}
@@ -13,7 +13,7 @@ export const FilePreview = ({ file }: { file: File }) => {
       />
     </div>
   ) : (
-    <div className="flex gap-1 bg-gray-600 p-2 rounded">
+    <div className="flex gap-1 rounded bg-gray-600 p-2">
       <DocumentText size="24" color="black" variant="Bulk" />
       <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm">
         {file?.name}

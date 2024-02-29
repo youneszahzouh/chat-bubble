@@ -7,7 +7,7 @@ export function PreviewUploadedFile(props: { file: File }) {
   const context = useContext(MessagingInputsContext);
   return (
     context && (
-      <div className="rounded relative">
+      <div className="relative rounded">
         <button
           className="absolute -right-2 -top-2"
           onClick={() => context.onRemoveFileLocal(props.file)}
