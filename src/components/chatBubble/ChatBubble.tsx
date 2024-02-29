@@ -91,8 +91,8 @@ export function ChatBubbleContent({
       side="top"
       sideOffset={0}
       className={cn(
-        "flex flex-col rounded-lg border-gray-200 bg-gray-800 p-0 sm:h-[calc(100vh-100px)] sm:w-[400px]",
-        "h-screen w-screen ",
+        "flex flex-col rounded-lg border-gray-200 bg-gray-800 p-0 sm:h-[calc(100dvh-100px)] sm:w-[400px]",
+        "h-[100dvh] w-screen ",
         className,
       )}
     >
