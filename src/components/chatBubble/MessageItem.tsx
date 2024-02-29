@@ -138,7 +138,9 @@ function VoiceMessageItem(props: { data: IVoiceMessage; isMe: boolean }) {
   return (
     <DisplayAudio
       audioUrl={file}
-      accentColor={context?.selectedDiscussion?.meta.accentColor}
+      accentColor={
+        props.isMe ? "#6B7280" : context?.selectedDiscussion?.meta.accentColor
+      }
     />
   );
 }

@@ -64,25 +64,27 @@ export const MessagingInputs = ({
         contentType: "VOICE",
         file: audio,
       });
-    }
+      onSendMessage(messagesToSend);
 
-    if (textMessage) {
-      messagesToSend.push({
-        contentType: "TEXT",
-        content: textMessage,
-      });
-    }
+      resetAudio();
+    } else {
+      if (textMessage) {
+        messagesToSend.push({
+          contentType: "TEXT",
+          content: textMessage,
+        });
+      }
 
-    if (files && files.length > 0) {
-      messagesToSend.push({
-        contentType: "IMAGE",
-        files: files?.map((file) => URL.createObjectURL(file)),
-      });
+      if (files && files.length > 0) {
+        messagesToSend.push({
+          contentType: "IMAGE",
+          files: files?.map((file) => URL.createObjectURL(file)),
+        });
+      }
+      onSendMessage(messagesToSend);
+      setTextMessage("");
+      resetFiles();
     }
-    onSendMessage(messagesToSend);
-    setTextMessage("");
-    resetFiles();
-    resetAudio();
   }, [audio, files, onSendMessage, resetAudio, textMessage]);
 
   const resetFiles = () => {
