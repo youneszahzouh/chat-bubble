@@ -7,7 +7,7 @@ export interface IMessage {
   id: number;
 
   user: IUser;
-  message: ITextMessage | IImageMessage | IVoiceMessage;
+  message: IDataMessage;
   createdAt: string;
 }
 
@@ -67,8 +67,10 @@ export interface ITypeOfMessage {
 }
 
 export type IDataMessage =
-  | (ITextMessage & { files?: never })
-  | (IImageMessage & { content?: never })
-  | (IVoiceMessage & { content?: never; files?: never });
+  | (ITextMessage & { files?: never; file?: never })
+  | (IImageMessage & { content?: never; file?: never })
+  | (IVoiceMessage & { content?: never; files?: never })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | { [key: string]: any };
 
-export type TMessageContentType = "TEXT" | "IMAGE" | "VOICE";
+export type TMessageContentType = "TEXT" | "IMAGE" | "VOICE" | "VIDEO";

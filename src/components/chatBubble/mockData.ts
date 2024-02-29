@@ -13,6 +13,7 @@ const MessageContentType = {
   TEXT: "TEXT",
   IMAGE: "IMAGE",
   VOICE: "VOICE",
+  VIDEO: "VIDEO",
 } as const;
 
 const ACCENT_COLORS = ["#F4538A", "#D04848 ", "#59D5E0", "#FAA300", "#525CEB"];
@@ -96,25 +97,30 @@ export const getOneDiscussion = (meta?: IDiscussionMeta): IOneDiscussion => {
           isMe: index === 0 ? false : faker.datatype.boolean(),
         },
         message:
-          contentType === "TEXT"
-            ? ({
-                id: uniqueIntegers[index],
-                contentType,
-                content: faker.lorem.sentence(),
-              } as ITextMessage)
-            : contentType === "VOICE"
+          contentType === "VIDEO"
+            ? {
+                contentType: "VIDEO",
+                file: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
+              }
+            : contentType === "TEXT"
               ? ({
-                  contentType: "VOICE",
-                  file: "https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_100KB_OGG.ogg",
-                } as IVoiceMessage)
-              : ({
-                  contentType: "IMAGE",
-                  files: [
-                    ...Array(2)
-                      .fill(1)
-                      .map(() => faker.image.urlLoremFlickr()),
-                  ],
-                } as IImageMessage),
+                  id: uniqueIntegers[index],
+                  contentType,
+                  content: faker.lorem.sentence(),
+                } as ITextMessage)
+              : contentType === "VOICE"
+                ? ({
+                    contentType: "VOICE",
+                    file: "https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_100KB_OGG.ogg",
+                  } as IVoiceMessage)
+                : ({
+                    contentType: "IMAGE",
+                    files: [
+                      ...Array(2)
+                        .fill(1)
+                        .map(() => faker.image.urlLoremFlickr()),
+                    ],
+                  } as IImageMessage),
         createdAt: faker.date.recent().toISOString(),
       };
     });

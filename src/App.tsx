@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import ChatBubble from "./components/chatBubble/ChatBubble";
 import { getAllDiscussions } from "./components/chatBubble/mockData";
 import i18n from "./locales/i18n";
+import ReactPlayer from "react-player";
 
 function App() {
   const { t } = useTranslation();
@@ -39,7 +40,23 @@ function App() {
 
         <p>{t("an-empty-page-to-make-use-of-a-chatbubble-component")}</p>
 
-        <ChatBubble data={getAllDiscussions()} />
+        <ChatBubble
+          data={getAllDiscussions()}
+          messageTypes={[
+            {
+              type: "VIDEO",
+              component: (props) => (
+                <div>
+                  <ReactPlayer
+                    width={"full"}
+                    height={200}
+                    url={props.data.file}
+                  />
+                </div>
+              ),
+            },
+          ]}
+        />
       </div>
     </>
   );

@@ -50,7 +50,10 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
                     isMe={data.user.isMe}
                   />
                 ) : (
-                  <TextMessageItem data={data.message} isMe={data.user.isMe} />
+                  <TextMessageItem
+                    data={data.message as ITextMessage}
+                    isMe={data.user.isMe}
+                  />
                 )
               ) : data.message.contentType === "IMAGE" ? (
                 CustomMessageComponent ? (
@@ -59,7 +62,10 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
                     isMe={data.user.isMe}
                   />
                 ) : (
-                  <ImageMessageItem data={data.message} isMe={data.user.isMe} />
+                  <ImageMessageItem
+                    data={data.message as IImageMessage}
+                    isMe={data.user.isMe}
+                  />
                 )
               ) : data.message.contentType === "VOICE" ? (
                 CustomMessageComponent ? (
@@ -68,8 +74,16 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
                     isMe={data.user.isMe}
                   />
                 ) : (
-                  <VoiceMessageItem data={data.message} isMe={data.user.isMe} />
+                  <VoiceMessageItem
+                    data={data.message as IVoiceMessage}
+                    isMe={data.user.isMe}
+                  />
                 )
+              ) : CustomMessageComponent ? (
+                <CustomMessageComponent
+                  data={data.message}
+                  isMe={data.user.isMe}
+                />
               ) : (
                 t("type-is-not-supported")
               )}
