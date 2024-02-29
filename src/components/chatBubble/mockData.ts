@@ -1,6 +1,13 @@
 import { faker } from "@faker-js/faker";
-
-export type TMessageContentType = "TEXT" | "IMAGE" | "VOICE";
+import {
+  IDiscussionMeta,
+  IOneDiscussion,
+  TMessageContentType,
+  ITextMessage,
+  IVoiceMessage,
+  IImageMessage,
+  IMessage,
+} from "./types";
 
 const MessageContentType = {
   TEXT: "TEXT",
@@ -9,48 +16,6 @@ const MessageContentType = {
 } as const;
 
 const ACCENT_COLORS = ["#F4538A", "#D04848 ", "#59D5E0", "#FAA300", "#525CEB"];
-
-export interface IUser {
-  name: string;
-  avatarUrl: string;
-  isMe: boolean;
-}
-export interface IMessage {
-  id: number;
-
-  user: IUser;
-  message: ITextMessage | IImageMessage | IVoiceMessage;
-  createdAt: string;
-}
-
-export interface ITextMessage {
-  contentType: "TEXT";
-  content: string;
-}
-
-export interface IImageMessage {
-  contentType: "IMAGE";
-  files: string[];
-}
-
-export interface IVoiceMessage {
-  contentType: "VOICE";
-  file: string;
-}
-
-export const defaultMessage: IMessage = {
-  id: faker.number.int({ max: 10000 }),
-  user: {
-    name: "Zahzouh",
-    avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Zahzouh",
-    isMe: true,
-  },
-  message: {
-    contentType: "TEXT",
-    content: "",
-  },
-  createdAt: new Date().toISOString(),
-};
 
 function shuffle(array: number[]) {
   let currentIndex = array.length,
@@ -164,25 +129,16 @@ export const getOneDiscussion = (meta?: IDiscussionMeta): IOneDiscussion => {
   };
 };
 
-export interface IOneDiscussion {
-  meta: IDiscussionMeta;
-  messages: Array<IMessage>;
-}
-
-export interface IDiscussionMeta {
-  accentColor: string;
-  title: string;
-  avatarUrl: string;
-}
-
-export interface IDiscussion {
-  id: number;
-  meta: IDiscussionMeta;
-  latestMessage: {
-    message: {
-      contentType: TMessageContentType;
-      content: string;
-    };
-    createdAt: Date;
-  };
-}
+export const defaultMessage: IMessage = {
+  id: faker.number.int({ max: 10000 }),
+  user: {
+    name: "Zahzouh",
+    avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=Zahzouh",
+    isMe: true,
+  },
+  message: {
+    contentType: "TEXT",
+    content: "",
+  },
+  createdAt: new Date().toISOString(),
+};

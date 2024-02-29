@@ -1,5 +1,5 @@
 import { MessageItem } from "./MessageItem";
-import { IMessage } from "./mockData";
+import { IMessage } from "./types";
 
 const ChatWindow = ({ messages }: { messages: IMessage[] }) => {
   return (

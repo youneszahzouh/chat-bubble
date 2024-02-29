@@ -1,10 +1,5 @@
 import { cn } from "../../utils/cn";
-import {
-  IImageMessage,
-  IMessage,
-  ITextMessage,
-  IVoiceMessage,
-} from "./mockData";
+import { IImageMessage, IMessage, ITextMessage, IVoiceMessage } from "./types";
 import { Avatar } from "./Avatar";
 import {
   Tooltip,
@@ -17,7 +12,7 @@ import { useContext, useEffect, useRef } from "react";
 import { ChatBubbleContext } from "./ChatBubble";
 import i18n from "../../locales/i18n";
 import { useTranslation } from "react-i18next";
-import { DisplayAudio } from "./MessagingInputs";
+import { DisplayAudio } from "./DisplayAudio";
 
 export const MessageItem = ({ data }: { data: IMessage }) => {
   const { t } = useTranslation();

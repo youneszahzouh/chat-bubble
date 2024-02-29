@@ -18,9 +18,10 @@ import { cn } from "../../utils/cn";
 import { getLayoutDirection } from "../../utils/getLayoutDirection";
 import { useAudioRecorder } from "../AudioRecorder/AudioRecorder";
 import { PreviewUploadedFiles } from "./PreviewUploadedFiles";
-import { IImageMessage, ITextMessage, IVoiceMessage } from "./mockData";
+import { IImageMessage, ITextMessage, IVoiceMessage } from "./types";
 import { formatTime } from "../../utils/formatTime";
 import { ChatBubbleContext } from "./ChatBubble";
+import { DisplayAudio } from "./DisplayAudio";
 
 export const MessagingInputsContext = createContext<{
   onRemoveFileLocal: (file: File) => void;
@@ -261,30 +262,6 @@ export const MessagingInputs = ({
         )}
       </div>
     </MessagingInputsContext.Provider>
-  );
-};
-
-export const DisplayAudio = ({
-  audioUrl,
-  accentColor = "gray",
-}: {
-  audioUrl: string;
-  accentColor?: string;
-}) => {
-  return (
-    <div
-      className={cn(
-        "flex- flex w-full",
-        "[&>audio::-webkit-media-controls-panel]:bg-[var(--accentColor)] [&>audio]:h-8",
-      )}
-      style={
-        {
-          "--accentColor": accentColor,
-        } as React.CSSProperties
-      }
-    >
-      <audio controls controlsList="nodownload" src={audioUrl} />
-    </div>
   );
 };
 

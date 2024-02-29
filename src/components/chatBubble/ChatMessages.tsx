@@ -5,16 +5,13 @@ import { useCallback, useContext, useState } from "react";
 import {} from "../../App";
 import ChatWindow from "./ChatWindow";
 import { MessagingInputs } from "./MessagingInputs";
-import {
-  IImageMessage,
-  ITextMessage,
-  IVoiceMessage,
-  getOneDiscussion,
-} from "./mockData";
+import { IImageMessage, ITextMessage, IVoiceMessage } from "./types";
+
 import { ChatBubbleContext } from "./ChatBubble";
 import { cn } from "../../utils/cn";
 import { Avatar } from "./Avatar";
 import i18n from "../../locales/i18n";
+import { getOneDiscussion } from "./mockData";
 
 const ChatMessages = () => {
   const context = useContext(ChatBubbleContext);

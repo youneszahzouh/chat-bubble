@@ -4,35 +4,8 @@ import { cn } from "../../utils/cn";
 import { Popover, PopoverContent, PopoverTrigger } from "../Popover/Popover";
 import ChatMessages from "./ChatMessages";
 import ChatDiscussions from "./Discussions";
-import {
-  IDiscussion,
-  IImageMessage,
-  ITextMessage,
-  IVoiceMessage,
-  getAllDiscussions,
-} from "./mockData";
-
-export interface IChatBubbleContext {
-  discussions: IDiscussion[];
-  setDiscussions: React.Dispatch<React.SetStateAction<IDiscussion[]>>;
-  selectedDiscussion: IDiscussion | null;
-  setSelectedDiscussion: React.Dispatch<
-    React.SetStateAction<IDiscussion | null>
-  >;
-
-  messageTypes?: ITypeOfMessage[];
-  popoverOpen: boolean;
-}
-
-type IDataMessage =
-  | (ITextMessage & { files?: never })
-  | (IImageMessage & { content?: never })
-  | (IVoiceMessage & { content?: never; files?: never });
-
-interface ITypeOfMessage {
-  type: string;
-  component: (props: { data: IDataMessage; isMe: boolean }) => JSX.Element;
-}
+import { getAllDiscussions } from "./mockData";
+import { IChatBubbleContext, IDiscussion, ITypeOfMessage } from "./types";
 
 export const ChatBubbleContext = createContext<IChatBubbleContext | null>(null);
 
