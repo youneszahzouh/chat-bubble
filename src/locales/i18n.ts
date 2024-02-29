@@ -37,4 +37,8 @@ i18n
     },
   });
 
+export const changeLanguage = (lng: "ar" | "en" | "es") => {
+  i18n.changeLanguage(lng);
+};
+
 export default i18n;
