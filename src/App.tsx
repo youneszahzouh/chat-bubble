@@ -31,7 +31,7 @@ function App() {
   const currentPath = useLocation().pathname;
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-10">
+    <div className="flex h-[100dvh] flex-col items-center justify-center gap-10">
       <div className="flex flex-wrap gap-10 px-2">
         <button
           onClick={() => changeLanguage("ar")}
