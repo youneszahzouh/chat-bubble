@@ -6,5 +6,9 @@
   "an-empty-page-to-make-use-of-a-chatbubble-component": "Una página vacía para utilizar un componente ChatBubble",
   "type-is-not-supported": "El tipo no es compatible",
   "conversations": "Conversaciones",
-  "preview-image": "imagen de vista previa"
+  "preview-image": "imagen de vista previa",
+  "default-chatbubble": "Burbuja de chat predeterminada",
+  "chat-bubble-with-custom-styles": "Burbuja de chat con estilos personalizados",
+  "chat-bubble-with-custom-type-video": "Burbuja de chat con tipo personalizado VIDEO",
+  "click-below-to-try-different-variations": "Haga clic a continuación para probar diferentes variaciones."
 }

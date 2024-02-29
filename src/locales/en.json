@@ -7,5 +7,9 @@
   "type-is-not-supported": "Type is not supported",
   "conversations": "Conversations",
   "preview-image": "preview image",
-  "the-mediarecorder-api-is-not-supported-in-your-browser": "The MediaRecorder API is not supported in your browser."
+  "the-mediarecorder-api-is-not-supported-in-your-browser": "The MediaRecorder API is not supported in your browser.",
+  "chat-bubble-with-custom-type-video": "Chat Bubble With Custom Type VIDEO",
+  "chat-bubble-with-custom-styles": "Chat Bubble With Custom Styles",
+  "default-chatbubble": "Default ChatBubble",
+  "click-below-to-try-different-variations": "Click below to try different variations"
 }

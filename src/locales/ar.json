@@ -6,5 +6,9 @@
   "an-empty-page-to-make-use-of-a-chatbubble-component": "صفحة فارغة للاستفادة من مكون ChatBubble",
   "type-is-not-supported": "النوع غير مدعوم",
   "conversations": "المحادثات",
-  "preview-image": "صورة المعاينة"
+  "preview-image": "صورة المعاينة",
+  "default-chatbubble": "فقاعة الدردشة الافتراضية",
+  "chat-bubble-with-custom-styles": "فقاعة الدردشة مع الأنماط المخصصة",
+  "chat-bubble-with-custom-type-video": "فقاعة الدردشة مع نوع الفيديو المخصص",
+  "click-below-to-try-different-variations": "انقر أدناه لتجربة أشكال مختلفة"
 }

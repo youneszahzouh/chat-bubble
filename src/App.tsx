@@ -10,17 +10,17 @@ const routes = [
   {
     path: "/",
     element: <DefaultChatBubble />,
-    label: "Default ChatBubble",
+    label: "default-chatbubble",
   },
   {
     path: "/chat-bubble-with-custom-type-video",
     element: <CustomChatBubble />,
-    label: "Chat Bubble With Custom Type VIDEO",
+    label: "chat-bubble-with-custom-type-video",
   },
   {
     path: "/chat-bubble-with-custom-styles",
     element: <CustomChatBubbleStyles />,
-    label: "Chat Bubble With Custom Styles",
+    label: "chat-bubble-with-custom-styles",
   },
 ];
 
@@ -32,31 +32,44 @@ function App() {
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-10">
-      <div className="flex gap-10">
+      <div className="flex flex-wrap gap-10 px-2">
         <button
           onClick={() => changeLanguage("ar")}
-          className="rounded border px-2"
+          className={cn(
+            "rounded border px-2",
+            i18n.language === "ar" && "bg-gray-700 text-white",
+          )}
         >
           {t("arabic")}
         </button>
         <button
           onClick={() => changeLanguage("en")}
-          className="rounded border px-2"
+          className={cn(
+            "rounded border px-2",
+            i18n.language === "en" && "bg-gray-700 text-white",
+          )}
         >
           {t("english")}
         </button>
         <button
           onClick={() => changeLanguage("es")}
-          className="rounded border px-2"
+          className={cn(
+            "rounded border px-2",
+            i18n.language === "es" && "bg-gray-700 text-white",
+          )}
         >
           {t("spanish")}
         </button>
       </div>
-      <p>{t("an-empty-page-to-make-use-of-a-chatbubble-component")}</p>
+      <p className="p-2 text-center">
+        {t("an-empty-page-to-make-use-of-a-chatbubble-component")}
+      </p>
 
-      <p>Click below to try different variations</p>
+      <p className="p-2 text-center">
+        {t("click-below-to-try-different-variations")}
+      </p>
 
-      <div className="flex gap-10">
+      <div className="flex flex-wrap items-center justify-center gap-10 p-2 ">
         {routes?.map((route) => (
           <Link
             key={route.path}
@@ -66,7 +79,7 @@ function App() {
               currentPath === route.path && "bg-gray-700 text-white",
             )}
           >
-            {route.label}
+            {t(route.label)}
           </Link>
         ))}
       </div>
