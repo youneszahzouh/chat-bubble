@@ -15,8 +15,8 @@ const ChatDiscussions = () => {
 
   return (
     <>
-      <header className="p-2 h-[50px] flex justify-between items-center bg-gray-700  text-white ">
-        <span className="text-center flex-1">{t("conversations")}</span>
+      <header className="flex h-[50px] items-center justify-between bg-gray-700 p-2  text-white ">
+        <span className="flex-1 text-center">{t("conversations")}</span>
         <PopoverClose asChild>
           <button>
             <Minus size="24" color="#FFF" />
@@ -24,12 +24,12 @@ const ChatDiscussions = () => {
         </PopoverClose>
       </header>
 
-      <div className="flex flex-col overflow-auto flex-1">
+      <div className="flex flex-1 flex-col overflow-auto">
         {context?.discussions?.map((discussion, index) => (
           <button
             key={index}
             className={cn(
-              "flex w-full p-4 cursor-pointer hover:bg-gray-600  gap-4 border-b border-b-gray-600 text-white"
+              "flex w-full cursor-pointer gap-4 border-b  border-b-gray-600 p-4 text-white hover:bg-gray-600",
             )}
             onClick={() => {
               if (context) {
@@ -37,17 +37,17 @@ const ChatDiscussions = () => {
               }
             }}
           >
-            <Avatar url={discussion.user.avatarUrl} />
-            <div className="flex flex-col items-start w-full">
-              <span>{discussion.user.name}</span>
-              <div className="flex gap-2 justify-between w-full text-gray-400">
+            <Avatar url={discussion.meta.avatarUrl} />
+            <div className="flex w-full flex-col items-start">
+              <span>{discussion.meta.title}</span>
+              <div className="flex w-full justify-between gap-2 text-gray-400">
                 <p className="w-full flex-1  text-start">
                   {discussion.latestMessage?.message.content}
                 </p>
                 <span>
                   {getRelativeTime(
                     new Date(discussion.latestMessage.createdAt),
-                    i18n.language
+                    i18n.language,
                   )}
                 </span>
               </div>

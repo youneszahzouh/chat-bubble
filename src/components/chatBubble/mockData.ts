@@ -9,6 +9,7 @@ const MessageContentType = {
 } as const;
 
 const ACCENT_COLORS = ["#F4538A", "#D04848 ", "#59D5E0", "#FAA300", "#525CEB"];
+
 export interface IUser {
   name: string;
   avatarUrl: string;
@@ -92,10 +93,10 @@ export const getAllDiscussions = () => {
       const name = faker.person.fullName();
       return {
         id: uniqueIntegers[index],
-        user: {
-          name,
+        meta: {
+          title: name,
           avatarUrl: faker.image.avatar(),
-          isMe: false,
+          accentColor: faker.helpers.arrayElement(ACCENT_COLORS),
         },
         latestMessage: {
           message: {
@@ -108,13 +109,13 @@ export const getAllDiscussions = () => {
     });
 };
 
-export const getOneDiscussion = (user?: IUser): IOneDiscussion => {
+export const getOneDiscussion = (meta?: IDiscussionMeta): IOneDiscussion => {
   const dataLength = 20;
 
   const uniqueIntegers = generateUniqueIntegers(1, dataLength, dataLength);
 
-  const name = user?.name ?? faker.person.fullName();
-  const avatar = user?.avatarUrl ?? faker.image.avatar();
+  const name = meta?.title ?? faker.person.fullName();
+  const avatar = meta?.avatarUrl ?? faker.image.avatar();
 
   const data = Array(dataLength)
     .fill(1)
@@ -164,21 +165,19 @@ export const getOneDiscussion = (user?: IUser): IOneDiscussion => {
 };
 
 export interface IOneDiscussion {
-  meta: {
-    accentColor: string;
-    title: string;
-    avatarUrl: string;
-  };
+  meta: IDiscussionMeta;
   messages: Array<IMessage>;
+}
+
+export interface IDiscussionMeta {
+  accentColor: string;
+  title: string;
+  avatarUrl: string;
 }
 
 export interface IDiscussion {
   id: number;
-  user: {
-    name: string;
-    avatarUrl: string;
-    isMe: boolean;
-  };
+  meta: IDiscussionMeta;
   latestMessage: {
     message: {
       contentType: TMessageContentType;

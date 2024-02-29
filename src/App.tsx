@@ -1,9 +1,7 @@
 import { useTranslation } from "react-i18next";
-import { useAudioRecorder } from "./components/AudioRecorder/AudioRecorder";
 import ChatBubble from "./components/chatBubble/ChatBubble";
 import { getAllDiscussions } from "./components/chatBubble/mockData";
 import i18n from "./locales/i18n";
-import { formatTime } from "./utils/formatTime";
 
 function App() {
   const { t } = useTranslation();
@@ -13,9 +11,6 @@ function App() {
   };
 
   document.body.dir = i18n.dir();
-
-  const { duration, startRecording, recordingStatus, stopRecording } =
-    useAudioRecorder();
 
   return (
     <>
@@ -43,14 +38,6 @@ function App() {
         </div>
 
         <p>{t("an-empty-page-to-make-use-of-a-chatbubble-component")}</p>
-
-        {recordingStatus === "inactive" ? (
-          <button onClick={startRecording}>Start Recording</button>
-        ) : (
-          <button onClick={stopRecording}>Stop Recording</button>
-        )}
-
-        {formatTime(duration)}
 
         <ChatBubble data={getAllDiscussions()} />
       </div>

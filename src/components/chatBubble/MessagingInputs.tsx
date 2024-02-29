@@ -10,6 +10,7 @@ import {
   RefObject,
   createContext,
   useCallback,
+  useContext,
   useRef,
   useState,
 } from "react";
@@ -19,6 +20,7 @@ import { useAudioRecorder } from "../AudioRecorder/AudioRecorder";
 import { PreviewUploadedFiles } from "./PreviewUploadedFiles";
 import { IImageMessage, ITextMessage, IVoiceMessage } from "./mockData";
 import { formatTime } from "../../utils/formatTime";
+import { ChatBubbleContext } from "./ChatBubble";
 
 export const MessagingInputsContext = createContext<{
   onRemoveFileLocal: (file: File) => void;
@@ -35,12 +37,10 @@ export const MessagingInputsContext = createContext<{
 
 export const MessagingInputs = ({
   onSendMessage,
-  accentColor,
 }: {
   onSendMessage: (
     messagesToSend: Array<ITextMessage | IImageMessage | IVoiceMessage>,
   ) => void;
-  accentColor: string;
 }) => {
   const [textMessage, setTextMessage] = useState<string>("");
   const [files, setFiles] = useState<File[]>([]);
@@ -143,6 +143,8 @@ export const MessagingInputs = ({
 
   const layoutDirection = getLayoutDirection();
 
+  const context = useContext(ChatBubbleContext);
+
   return (
     <MessagingInputsContext.Provider
       value={{
@@ -162,39 +164,59 @@ export const MessagingInputs = ({
           {recordingStatus === "inactive" ? (
             audio ? (
               <button onClick={resetAudio}>
-                <CloseCircle size="24" variant="Bold" color={accentColor} />
+                <CloseCircle
+                  size="24"
+                  variant="Bold"
+                  color={context?.selectedDiscussion?.meta.accentColor}
+                />
               </button>
             ) : (
               <>
                 <button onClick={startRecording}>
-                  <Microphone size="24" variant="Bold" color={accentColor} />
+                  <Microphone
+                    size="24"
+                    variant="Bold"
+                    color={context?.selectedDiscussion?.meta.accentColor}
+                  />
                 </button>
 
                 <button onClick={handleClick}>
-                  <GalleryExport size="24" variant="Bold" color={accentColor} />
+                  <GalleryExport
+                    size="24"
+                    variant="Bold"
+                    color={context?.selectedDiscussion?.meta.accentColor}
+                  />
                 </button>
               </>
             )
           ) : (
             <button onClick={stopRecording}>
-              <StopCircle size="24" variant="Bold" color={accentColor} />
+              <StopCircle
+                size="24"
+                variant="Bold"
+                color={context?.selectedDiscussion?.meta.accentColor}
+              />
             </button>
           )}
         </div>
 
         {audio ? (
-          <audio
-            className="flex w-full flex-1"
-            controls
-            controlsList="nodownload"
-            src={audio}
+          <DisplayAudio
+            audioUrl={audio}
+            accentColor={context?.selectedDiscussion?.meta.accentColor}
           />
         ) : recordingStatus === "recording" ? (
           <p
-            className="flex w-full flex-1 items-center justify-center rounded-full text-white"
-            style={{
-              backgroundColor: accentColor,
-            }}
+            className={cn(
+              "flex w-full flex-1 items-center justify-center rounded-full text-white",
+              context?.selectedDiscussion?.meta.accentColor &&
+                "bg-[var(--accentColor)]",
+            )}
+            style={
+              {
+                "--accentColor": context?.selectedDiscussion?.meta.accentColor,
+              } as React.CSSProperties
+            }
           >
             {formatTime(duration)}
           </p>
@@ -230,10 +252,40 @@ export const MessagingInputs = ({
             onClick={handleSendMessage}
             className={cn(layoutDirection === "rtl" && "-scale-x-100")}
           >
-            <Send size="24" variant="Bold" color={accentColor} />
+            <Send
+              size="24"
+              variant="Bold"
+              color={context?.selectedDiscussion?.meta.accentColor}
+            />
           </button>
         )}
       </div>
     </MessagingInputsContext.Provider>
   );
 };
+
+export const DisplayAudio = ({
+  audioUrl,
+  accentColor = "gray",
+}: {
+  audioUrl: string;
+  accentColor?: string;
+}) => {
+  return (
+    <div
+      className={cn(
+        "flex- flex w-full",
+        "[&>audio::-webkit-media-controls-panel]:bg-[var(--accentColor)] [&>audio]:h-8",
+      )}
+      style={
+        {
+          "--accentColor": accentColor,
+        } as React.CSSProperties
+      }
+    >
+      <audio controls controlsList="nodownload" src={audioUrl} />
+    </div>
+  );
+};
+
+export default MessagingInputs;

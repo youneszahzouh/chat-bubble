@@ -17,6 +17,7 @@ import { useContext, useEffect, useRef } from "react";
 import { ChatBubbleContext } from "./ChatBubble";
 import i18n from "../../locales/i18n";
 import { useTranslation } from "react-i18next";
+import { DisplayAudio } from "./MessagingInputs";
 
 export const MessageItem = ({ data }: { data: IMessage }) => {
   const { t } = useTranslation();
@@ -93,12 +94,21 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
 };
 
 function TextMessageItem(props: { data: ITextMessage; isMe: boolean }) {
+  const context = useContext(ChatBubbleContext);
+
   return (
     <p
       className={cn(
-        "rounded-xl bg-blue-500 px-2 py-1  text-white",
+        "rounded-xl bg-blue-500 px-2 py-1 text-white",
+        context?.selectedDiscussion?.meta.accentColor &&
+          "bg-[var(--accentColor)]",
         props.isMe && "bg-gray-500",
       )}
+      style={
+        {
+          "--accentColor": context?.selectedDiscussion?.meta.accentColor,
+        } as React.CSSProperties
+      }
     >
       {props?.data?.content}
     </p>
@@ -128,5 +138,12 @@ function ImageMessageItem(props: { data: IImageMessage; isMe: boolean }) {
 
 function VoiceMessageItem(props: { data: IVoiceMessage; isMe: boolean }) {
   const file = props.data.file;
-  return <audio src={file} controls controlsList="nodownload" />;
+  const context = useContext(ChatBubbleContext);
+
+  return (
+    <DisplayAudio
+      audioUrl={file}
+      accentColor={context?.selectedDiscussion?.meta.accentColor}
+    />
+  );
 }

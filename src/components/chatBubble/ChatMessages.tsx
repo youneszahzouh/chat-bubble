@@ -5,7 +5,12 @@ import { useCallback, useContext, useState } from "react";
 import {} from "../../App";
 import ChatWindow from "./ChatWindow";
 import { MessagingInputs } from "./MessagingInputs";
-import { IImageMessage, ITextMessage, getOneDiscussion } from "./mockData";
+import {
+  IImageMessage,
+  ITextMessage,
+  IVoiceMessage,
+  getOneDiscussion,
+} from "./mockData";
 import { ChatBubbleContext } from "./ChatBubble";
 import { cn } from "../../utils/cn";
 import { Avatar } from "./Avatar";
@@ -14,11 +19,11 @@ import i18n from "../../locales/i18n";
 const ChatMessages = () => {
   const context = useContext(ChatBubbleContext);
 
-  const discussion = getOneDiscussion(context?.selectedDiscussion?.user);
+  const discussion = getOneDiscussion(context?.selectedDiscussion?.meta);
   const [messages, setMessages] = useState(discussion.messages);
 
   const onSendMessage = useCallback(
-    (messagesToSend: Array<IImageMessage | ITextMessage>) => {
+    (messagesToSend: Array<IImageMessage | ITextMessage | IVoiceMessage>) => {
       messagesToSend;
       setMessages([
         ...messages,
@@ -34,18 +39,20 @@ const ChatMessages = () => {
         })),
       ]);
     },
-    [messages]
+    [messages],
   );
 
   return (
     <>
-      <ChatMessagesHeader accentColor={discussion.meta.accentColor} />
+      <ChatMessagesHeader
+        accentColor={
+          context?.selectedDiscussion?.meta.accentColor ??
+          discussion.meta.accentColor
+        }
+      />
       <ChatWindow messages={messages} />
 
-      <MessagingInputs
-        onSendMessage={onSendMessage}
-        accentColor={discussion.meta.accentColor}
-      />
+      <MessagingInputs onSendMessage={onSendMessage} />
     </>
   );
 };
@@ -59,8 +66,8 @@ function ChatMessagesHeader({ accentColor }: { accentColor: string }) {
   return (
     <header
       className={cn(
-        "p-2 h-[50px] flex gap-2 items-center justify-between bg-gray-700 text-white  backdrop-invert",
-        "drop-shadow-[black]"
+        "flex h-[50px] items-center justify-between gap-2 bg-gray-700 p-2 text-white  backdrop-invert",
+        "drop-shadow-[black]",
       )}
       style={{
         backgroundColor: accentColor,
@@ -77,11 +84,11 @@ function ChatMessagesHeader({ accentColor }: { accentColor: string }) {
         <ArrowLeft color="white" />
       </button>
 
-      <div className="flex gap-1 justify-start flex-1 items-center">
-        {context?.selectedDiscussion?.user.avatarUrl && (
-          <Avatar url={context.selectedDiscussion.user.avatarUrl} />
+      <div className="flex flex-1 items-center justify-start gap-1">
+        {context?.selectedDiscussion?.meta.avatarUrl && (
+          <Avatar url={context.selectedDiscussion.meta.avatarUrl} />
         )}
-        {context?.selectedDiscussion?.user.name}
+        {context?.selectedDiscussion?.meta.title}
       </div>
 
       <PopoverClose asChild>
