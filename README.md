@@ -15,6 +15,8 @@ ChatBubble component tailored to diverse messaging needs. Key features include:
 - Designing the component with extensibility in mind, facilitating the addition of new message types.
 - Ensuring each component maintains a singular responsibility to adhere to best practices.
 
+### DEMO : https://chat-bubble-liard.vercel.app/
+
 ## Tools
 
 - React
