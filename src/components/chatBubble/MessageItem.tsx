@@ -85,7 +85,9 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
                   isMe={data.user.isMe}
                 />
               ) : (
-                t("type-is-not-supported")
+                <p className="bg-gray-100 p-2 text-black">
+                  {t("type-is-not-supported")}
+                </p>
               )}
             </div>
           </TooltipTrigger>
