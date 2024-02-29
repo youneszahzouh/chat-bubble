@@ -1,5 +1,10 @@
 import { cn } from "../../utils/cn";
-import { IImageMessage, IMessage, ITextMessage } from "./mockData";
+import {
+  IImageMessage,
+  IMessage,
+  ITextMessage,
+  IVoiceMessage,
+} from "./mockData";
 import { Avatar } from "./Avatar";
 import {
   Tooltip,
@@ -19,7 +24,7 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
   const context = useContext(ChatBubbleContext);
 
   const CustomMessageComponent = context?.messageTypes?.find(
-    (item) => item.type === data.message.contentType
+    (item) => item.type === data.message.contentType,
   )?.component;
 
   const lastItemRef = useRef<HTMLDivElement>(null);
@@ -32,7 +37,7 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
     <div
       className={cn(
         "flex items-start gap-1",
-        data.user.isMe && "flex-row-reverse"
+        data.user.isMe && "flex-row-reverse",
       )}
       ref={lastItemRef}
     >
@@ -60,6 +65,15 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
                 ) : (
                   <ImageMessageItem data={data.message} isMe={data.user.isMe} />
                 )
+              ) : data.message.contentType === "VOICE" ? (
+                CustomMessageComponent ? (
+                  <CustomMessageComponent
+                    data={data.message}
+                    isMe={data.user.isMe}
+                  />
+                ) : (
+                  <VoiceMessageItem data={data.message} isMe={data.user.isMe} />
+                )
               ) : (
                 t("type-is-not-supported")
               )}
@@ -68,7 +82,7 @@ export const MessageItem = ({ data }: { data: IMessage }) => {
           <TooltipContent
             side="left"
             sideOffset={0}
-            className="bg-gray-100/80 rounded p-1 m-1 capitalize"
+            className="m-1 rounded bg-gray-100/80 p-1 capitalize"
           >
             {getRelativeTime(new Date(data.createdAt), i18n.language)}
           </TooltipContent>
@@ -82,8 +96,8 @@ function TextMessageItem(props: { data: ITextMessage; isMe: boolean }) {
   return (
     <p
       className={cn(
-        "bg-blue-500 px-2 py-1 rounded-xl  text-white",
-        props.isMe && "bg-gray-500"
+        "rounded-xl bg-blue-500 px-2 py-1  text-white",
+        props.isMe && "bg-gray-500",
       )}
     >
       {props?.data?.content}
@@ -96,8 +110,8 @@ function ImageMessageItem(props: { data: IImageMessage; isMe: boolean }) {
   return (
     <div
       className={cn(
-        "grid grid-cols-2 gap-1 col-span-full ",
-        files?.length < 2 && `grid-cols-${files?.length}`
+        "col-span-full grid grid-cols-2 gap-1 ",
+        files?.length < 2 && `grid-cols-${files?.length}`,
       )}
     >
       {files?.map((image, index) => (
@@ -110,4 +124,9 @@ function ImageMessageItem(props: { data: IImageMessage; isMe: boolean }) {
       ))}
     </div>
   );
+}
+
+function VoiceMessageItem(props: { data: IVoiceMessage; isMe: boolean }) {
+  const file = props.data.file;
+  return <audio src={file} controls controlsList="nodownload" />;
 }

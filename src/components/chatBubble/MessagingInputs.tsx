@@ -17,7 +17,8 @@ import { cn } from "../../utils/cn";
 import { getLayoutDirection } from "../../utils/getLayoutDirection";
 import { useAudioRecorder } from "../AudioRecorder/AudioRecorder";
 import { PreviewUploadedFiles } from "./PreviewUploadedFiles";
-import { IImageMessage, ITextMessage } from "./mockData";
+import { IImageMessage, ITextMessage, IVoiceMessage } from "./mockData";
+import { formatTime } from "../../utils/formatTime";
 
 export const MessagingInputsContext = createContext<{
   onRemoveFileLocal: (file: File) => void;
@@ -36,14 +37,33 @@ export const MessagingInputs = ({
   onSendMessage,
   accentColor,
 }: {
-  onSendMessage: (messagesToSend: Array<ITextMessage | IImageMessage>) => void;
+  onSendMessage: (
+    messagesToSend: Array<ITextMessage | IImageMessage | IVoiceMessage>,
+  ) => void;
   accentColor: string;
 }) => {
   const [textMessage, setTextMessage] = useState<string>("");
   const [files, setFiles] = useState<File[]>([]);
 
+  const {
+    audio,
+    duration,
+    resetAudio,
+    startRecording,
+    recordingStatus,
+    stopRecording,
+  } = useAudioRecorder();
+
   const handleSendMessage = useCallback(() => {
-    const messagesToSend: Array<ITextMessage | IImageMessage> = [];
+    const messagesToSend: Array<ITextMessage | IImageMessage | IVoiceMessage> =
+      [];
+
+    if (audio) {
+      messagesToSend.push({
+        contentType: "VOICE",
+        file: audio,
+      });
+    }
 
     if (textMessage) {
       messagesToSend.push({
@@ -61,7 +81,8 @@ export const MessagingInputs = ({
     onSendMessage(messagesToSend);
     setTextMessage("");
     resetFiles();
-  }, [files, onSendMessage, textMessage]);
+    resetAudio();
+  }, [audio, files, onSendMessage, resetAudio, textMessage]);
 
   const resetFiles = () => {
     setFiles([]);
@@ -122,9 +143,6 @@ export const MessagingInputs = ({
 
   const layoutDirection = getLayoutDirection();
 
-  const { audio, resetAudio, startRecording, recordingStatus, stopRecording } =
-    useAudioRecorder();
-
   return (
     <MessagingInputsContext.Provider
       value={{
@@ -165,7 +183,21 @@ export const MessagingInputs = ({
         </div>
 
         {audio ? (
-          <audio className="flex flex-1 w-full" controls controlsList="nodownload" src={audio} />
+          <audio
+            className="flex w-full flex-1"
+            controls
+            controlsList="nodownload"
+            src={audio}
+          />
+        ) : recordingStatus === "recording" ? (
+          <p
+            className="flex w-full flex-1 items-center justify-center rounded-full text-white"
+            style={{
+              backgroundColor: accentColor,
+            }}
+          >
+            {formatTime(duration)}
+          </p>
         ) : (
           <div
             className={cn(
@@ -193,12 +225,14 @@ export const MessagingInputs = ({
           </div>
         )}
 
-        <button
-          onClick={handleSendMessage}
-          className={cn(layoutDirection === "rtl" && "-scale-x-100")}
-        >
-          <Send size="24" variant="Bold" color={accentColor} />
-        </button>
+        {recordingStatus === "recording" ? null : (
+          <button
+            onClick={handleSendMessage}
+            className={cn(layoutDirection === "rtl" && "-scale-x-100")}
+          >
+            <Send size="24" variant="Bold" color={accentColor} />
+          </button>
+        )}
       </div>
     </MessagingInputsContext.Provider>
   );

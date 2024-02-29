@@ -8,6 +8,7 @@ import {
   IDiscussion,
   IImageMessage,
   ITextMessage,
+  IVoiceMessage,
   getAllDiscussions,
 } from "./mockData";
 
@@ -25,7 +26,8 @@ export interface IChatBubbleContext {
 
 type IDataMessage =
   | (ITextMessage & { files?: never })
-  | (IImageMessage & { content?: never });
+  | (IImageMessage & { content?: never })
+  | (IVoiceMessage & { content?: never; files?: never });
 
 interface ITypeOfMessage {
   type: string;
@@ -44,7 +46,7 @@ function ChatBubble({
   messageTypes?: ITypeOfMessage[];
 }) {
   const [discussions, setDiscussions] = useState<IDiscussion[]>(
-    data ?? getAllDiscussions()
+    data ?? getAllDiscussions(),
   );
 
   const [selectedDiscussion, setSelectedDiscussion] =
@@ -91,9 +93,9 @@ export function ChatBubbleTrigger({
   return (
     <PopoverTrigger
       className={cn(
-        "absolute hidden sm:block  bg-gray-600 transition  rounded-full items-center justify-center p-2 bottom-10 end-10 h-10 w-10",
+        "absolute bottom-10 end-10  hidden h-10  w-10 items-center justify-center rounded-full bg-gray-600 p-2 transition sm:block",
         !context?.popoverOpen && "block",
-        className
+        className,
       )}
     >
       {children ? children : <MessageText1 variant="Bold" color="#FFF" />}
@@ -116,9 +118,9 @@ export function ChatBubbleContent({
       side="top"
       sideOffset={0}
       className={cn(
-        "sm:w-[400px] flex flex-col sm:h-[calc(100vh-100px)] p-0 bg-gray-800 rounded-lg border-gray-200",
+        "flex flex-col rounded-lg border-gray-200 bg-gray-800 p-0 sm:h-[calc(100vh-100px)] sm:w-[400px]",
         "h-screen w-screen ",
-        className
+        className,
       )}
     >
       {children ? (

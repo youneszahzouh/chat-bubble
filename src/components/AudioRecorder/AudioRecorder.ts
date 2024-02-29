@@ -1,7 +1,9 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const mimeType: string = "audio/webm";
+
+export type Interval = null | number | ReturnType<typeof setInterval>;
 
 export const useAudioRecorder = () => {
   const { t } = useTranslation();
@@ -16,6 +18,24 @@ export const useAudioRecorder = () => {
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
 
   const [blobFile, setBlobFile] = useState<Blob | null>(null);
+
+  const [duration, setDuration] = useState(0);
+
+  useEffect(() => {
+    let recordingInterval: Interval = null;
+
+    if (recordingStatus === "recording")
+      recordingInterval = setInterval(() => {
+        setDuration(duration + 1000);
+      }, 1000);
+    else {
+      typeof recordingInterval === "number" && clearInterval(recordingInterval);
+    }
+
+    return () => {
+      typeof recordingInterval === "number" && clearInterval(recordingInterval);
+    };
+  }, [duration, recordingStatus]);
 
   const getMicPermissionThenStartRecording = async (): Promise<void> => {
     if ("MediaRecorder" in window) {
@@ -92,6 +112,7 @@ export const useAudioRecorder = () => {
     setAudio(null);
     setBlobFile(null);
     setAudioChunks([]);
+    setDuration(0);
   }, []);
 
   return {
@@ -110,6 +131,7 @@ export const useAudioRecorder = () => {
     resetAudio,
     setBlobFile,
     blobFile,
+    duration,
   };
 
   //   return (

@@ -5,7 +5,7 @@ export type TMessageContentType = "TEXT" | "IMAGE" | "VOICE";
 const MessageContentType = {
   TEXT: "TEXT",
   IMAGE: "IMAGE",
-  // VOICE = "VOICE",
+  VOICE: "VOICE",
 } as const;
 
 const ACCENT_COLORS = ["#F4538A", "#D04848 ", "#59D5E0", "#FAA300", "#525CEB"];
@@ -18,7 +18,7 @@ export interface IMessage {
   id: number;
 
   user: IUser;
-  message: ITextMessage | IImageMessage;
+  message: ITextMessage | IImageMessage | IVoiceMessage;
   createdAt: string;
 }
 
@@ -30,6 +30,11 @@ export interface ITextMessage {
 export interface IImageMessage {
   contentType: "IMAGE";
   files: string[];
+}
+
+export interface IVoiceMessage {
+  contentType: "VOICE";
+  file: string;
 }
 
 export const defaultMessage: IMessage = {
@@ -69,7 +74,7 @@ function shuffle(array: number[]) {
 function generateUniqueIntegers(
   min: number,
   max: number,
-  count: number
+  count: number,
 ): number[] {
   const numbers = Array.from({ length: max - min + 1 }, (_, i) => i + min);
   const shuffledNumbers = shuffle(numbers);
@@ -115,7 +120,7 @@ export const getOneDiscussion = (user?: IUser): IOneDiscussion => {
     .fill(1)
     .map((_item, index) => {
       const contentType = faker.helpers.enumValue(
-        MessageContentType
+        MessageContentType,
       ) as TMessageContentType;
       return {
         id: uniqueIntegers[index],
@@ -131,14 +136,19 @@ export const getOneDiscussion = (user?: IUser): IOneDiscussion => {
                 contentType,
                 content: faker.lorem.sentence(),
               } as ITextMessage)
-            : ({
-                contentType: "IMAGE",
-                files: [
-                  ...Array(2)
-                    .fill(1)
-                    .map(() => faker.image.urlLoremFlickr()),
-                ],
-              } as IImageMessage),
+            : contentType === "VOICE"
+              ? ({
+                  contentType: "VOICE",
+                  file: "https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_100KB_OGG.ogg",
+                } as IVoiceMessage)
+              : ({
+                  contentType: "IMAGE",
+                  files: [
+                    ...Array(2)
+                      .fill(1)
+                      .map(() => faker.image.urlLoremFlickr()),
+                  ],
+                } as IImageMessage),
         createdAt: faker.date.recent().toISOString(),
       };
     });
